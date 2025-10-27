@@ -12,18 +12,25 @@ const stats = [
 export default function Hero() {
   const heroRef = useRef(null);
 
-  useEffect(() => {
-    const el = heroRef.current;
 
-    if (!el) return;
 
-    const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+useEffect(() => {
+  const el = heroRef.current;
+  if (!el) return;
 
+  // respeta “reduce motion”
+  const prefersReduced =
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  // Animación de entrada (igual que antes)
+  let timeline = null;
+  if (!prefersReduced) {
+    timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
     timeline
       .fromTo(
         el.querySelector(".hero-text"),
         { opacity: 0, y: 60 },
-        { opacity: 1, y: 0, duration: 2.1 }
+        { opacity: 1, y: 0, duration: 1.1 }
       )
       .fromTo(
         el.querySelector(".hero-card"),
@@ -31,9 +38,65 @@ export default function Hero() {
         { opacity: 1, y: 0, scale: 1, duration: 1 },
         "-=0.6"
       );
+  }
 
-    return () => timeline.kill();
-  }, []);
+  // Efecto parallax con el mouse
+  const card = el.querySelector(".hero-card");
+  const text = el.querySelector(".hero-text");
+  const blobLeft = el.querySelector(".blob-left");
+  const blobRight = el.querySelector(".blob-right");
+
+  const onMove = (e) => {
+    if (prefersReduced) return;
+    const { innerWidth: w, innerHeight: h } = window;
+    const x = (e.clientX / w - 0.5) * 2; // -1..1
+    const y = (e.clientY / h - 0.5) * 2; // -1..1
+
+    if (card) {
+      gsap.to(card, {
+        x: x * 10,
+        y: y * 10,
+        rotateX: y * 6,
+        rotateY: -x * 6,
+        transformPerspective: 800,
+        transformOrigin: "center",
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    }
+    if (text) {
+      gsap.to(text, { x: x * -5, y: y * -5, duration: 0.5, ease: "power2.out" });
+    }
+    if (blobLeft) {
+      gsap.to(blobLeft, { x: x * -12, y: y * -8, duration: 0.6, ease: "power2.out" });
+    }
+    if (blobRight) {
+      gsap.to(blobRight, { x: x * 12, y: y * 10, duration: 0.6, ease: "power2.out" });
+    }
+  };
+
+  const onLeave = () => {
+    if (prefersReduced) return;
+    gsap.to([card, text, blobLeft, blobRight].filter(Boolean), {
+      x: 0,
+      y: 0,
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.6,
+      ease: "power3.out",
+    });
+  };
+
+  window.addEventListener("mousemove", onMove);
+  window.addEventListener("mouseleave", onLeave);
+
+  return () => {
+    window.removeEventListener("mousemove", onMove);
+    window.removeEventListener("mouseleave", onLeave);
+    if (timeline) timeline.kill();
+  };
+}, []);
+
 
   return (
     <section
