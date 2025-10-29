@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-
+import bici from "../assets/images/bici.png";
+import pista from "../assets/images/pista.png";
+import nado from "../assets/images/nado.png";
 /**
  * Tres tarjetas (Ciclismo, Running, Natación).
  * - Hover / foco / click: se abre overlay a ~80vh con transición animada.
@@ -15,21 +17,21 @@ const items = [
   {
     key: "bike",
     title: "Ciclismo",
-    img: "src/assets/images/bici.png", 
+    img: bici, 
     alt: "Persona pedaleando en bicicleta de ruta",
     details: ["Entrenamientos personalizados por semana", "Análisis de potencia avanzada", "Planes de recuperación activa"],
   },
   {
     key: "run",
     title: "Running",
-    img: "src/assets/images/pista.png", 
+    img: pista, 
     alt: "Persona corriendo en pista",
     details: ["Recomendaciones nutricionales", "Seguimiento de progreso semanal", "Planes de entrenamiento adaptativos"],
   },
   {
     key: "swim",
     title: "Natación",
-    img: "src/assets/images/nado.png", 
+    img: nado, 
     alt: "Persona nadando estilo crol",
     details: ["Objetivos personalizados", "Análisis de técnica con video", "Planes de entrenamiento por fases"],
   },
