@@ -1,3 +1,5 @@
+
+
 const features = [
   {
     title: "Planificación adaptativa",
@@ -25,6 +27,8 @@ export default function ScrollSection() {
       id="recursos"
       className="relative overflow-hidden bg-white py-24 text-slate-900 sm:py-28"
     >
+
+      
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-slate-950/20" />
       <div className="absolute -right-20 top-16 h-72 w-72 rounded-full bg-sky-100 blur-3xl" />
       <div className="absolute -left-10 bottom-0 h-72 w-72 rounded-full bg-indigo-100 blur-3xl" />
@@ -32,7 +36,7 @@ export default function ScrollSection() {
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <div className="max-w-2xl space-y-4">
           <span className="inline-flex items-center gap-2 rounded-full bg-slate-900/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
-            Cómo trabaja tu staff
+            Cómo trabaja el staff
           </span>
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Procesos claros para planificar, ejecutar y medir cada bloque de entrenamiento.

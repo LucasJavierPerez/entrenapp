@@ -1,11 +1,11 @@
 import React from "react";
 import Hero from "../components/hero";
 import ScrollSection from "../components/scrollsections";
-import img1 from "../assets/images/1.png";
-import img2 from "../assets/images/1.png";
+import TresDisciplinasZoomAnimado from "../components/TresDisciplinasZoomAnimado";
+import img1 from "../assets/images/entrenador.png";
+import img2 from "../assets/images/dashboard.png";
 import img3 from "../assets/images/1.png";
-import img4 from "../assets/images/1.png";
-import img5 from "../assets/images/1.png";
+
 
 const resources = [
   {
@@ -26,18 +26,7 @@ const resources = [
     title: "Integración entre staff remoto y presencial en tiempo real",
     author: "Host: Nicolás Duarte",
   },
-  {
-    image: img4,
-    tag: "OPERACIONES",
-    title: "Checklist para lanzar tu academia digital en 30 días",
-    author: "Consultoría EntrenaApp",
-  },
-  {
-    image: img5,
-    tag: "PRODUCTO",
-    title: "Nuevas automatizaciones para gestionar mesociclos complejos",
-    author: "Product Team",
-  },
+
 ];
 
 export default function LoginPage() {
@@ -45,6 +34,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Hero />
       <ScrollSection />
+      <TresDisciplinasZoomAnimado />
 
       <section
         id="login"
@@ -55,14 +45,14 @@ export default function LoginPage() {
         <div className="relative mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="space-y-6">
             <span className="inline-flex w-fit items-center gap-2 rounded-full bg-slate-900/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
-              Portal para equipos
+              Portal para Alumnos
             </span>
             <div className="space-y-4">
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                Inicia sesión y sincroniza a tu staff en cuestión de minutos.
+                Inicia sesión y sincroniza con tu Entrenador.
               </h2>
               <p className="text-base text-slate-600 sm:text-lg">
-                Accede al panel donde conviven planes, métricas y comunicación del equipo. Invita a tu staff, comparte rutinas y sigue el progreso sin fricción.
+                Accede al panel donde conviven planes, métricas y comunicación del equipo. Invita a tus amigos, comparte rutinas y sigue tu progreso sin fricción.
               </p>
             </div>
             <ul className="space-y-3 text-sm text-slate-700">

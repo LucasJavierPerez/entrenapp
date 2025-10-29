@@ -1,11 +1,24 @@
+
+import FullCalendar from '@fullcalendar/react'
+import dayGrid from '@fullcalendar/daygrid'
+import timeGrid from '@fullcalendar/timegrid'
+import list from '@fullcalendar/list'
+import esLocale from '@fullcalendar/core/locales/es'
+
 export default function EntrenamientosPage() {
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Entrenamientos Presenciales</h2>
-      <p>Consulta el calendario y regístrate en sesiones.</p>
-      <div className="bg-white p-4 rounded-lg shadow-sm mt-4">
-        <p>📅 Próximos entrenamientos aparecerán aquí.</p>
-      </div>
-    </div>
+    <FullCalendar
+      plugins={[dayGrid, timeGrid, list]}
+      initialView="dayGridMonth"
+      locales={[esLocale]}
+      locale="es"
+      height="auto"
+      headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,listWeek' }}
+      events={[
+        { title: 'Entrenamiento fuerza', start: '2025-11-03T18:00:00' },
+        { title: 'Rodaje 10k', start: '2025-11-05' },
+      ]}
+    />
   );
 }
+

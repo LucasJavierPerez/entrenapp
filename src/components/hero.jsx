@@ -103,6 +103,7 @@ useEffect(() => {
       ref={heroRef}
       className="relative overflow-hidden bg-slate-950 pb-16 pt-24 text-white sm:pb-24 sm:pt-28"
     >
+
       <div className="absolute inset-0">
         <div className="absolute -left-32 top-[-280px] h-[560px] w-[560px] rounded-full bg-sky-500/30 blur-3xl" />
         <div className="absolute -right-16 top-[180px] h-[420px] w-[420px] rounded-full bg-indigo-500/30 blur-3xl" />

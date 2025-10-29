@@ -18,6 +18,12 @@
     "tailwindcss": "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.3.tgz"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/list": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
+    "@fullcalendar/timegrid": "^6.1.19",
+    "framer-motion": "^12.23.24",
+    "fullcalendar": "^6.1.19",
     "gsap": "^3.13.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
