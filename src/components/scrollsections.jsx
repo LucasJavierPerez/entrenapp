@@ -1,79 +1,73 @@
-// 📁 src/components/ScrollSection.jsx
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import foto from "../assets/images/1.png";
 
-gsap.registerPlugin(ScrollTrigger);
+
+const features = [
+  {
+    title: "Planificación adaptativa",
+    description:
+      "Diseña microciclos dinámicos con cargas que se ajustan según la disponibilidad y respuesta de cada atleta.",
+    items: ["Plantillas inteligentes", "Ajustes por IA en tiempo real"],
+  },
+  {
+    title: "Coaching conectado",
+    description:
+      "Centraliza feedback, chat y videoanálisis para mantener al equipo alineado sin depender de múltiples herramientas.",
+    items: ["Mensajería contextual", "Alertas de progreso"],
+  },
+  {
+    title: "Insights accionables",
+    description:
+      "Transforma métricas en decisiones claras con tableros que destacan riesgos y oportunidades de rendimiento.",
+    items: ["Indicadores de fatiga", "Pronóstico de metas"],
+  },
+];
 
 export default function ScrollSection() {
-  const sectionRef = useRef(null);
-  const imgRef = useRef(null);
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const img = imgRef.current;
-    const content = contentRef.current;
-
-    // Imagen: de izquierda a derecha (o viceversa cambiando valores)
-    gsap.fromTo(
-      img,
-      { xPercent: -30 },            // arranca 20% a la izquierda
-      {
-        xPercent: 30,               // termina 20% a la derecha
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",      // cuando la sección entra al viewport
-          end: "bottom top",        // hasta que sale
-          scrub: true,              // ligado al scroll
-        },
-      }
-    );
-
-    // Contenido: movimiento contrario para mayor profundidad
-    gsap.fromTo(
-      content,
-      { xPercent: 10, opacity: 0.9 },
-      {
-        xPercent: -10,
-        opacity: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      }
-    );
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-black text-white flex items-center justify-center"
+      id="recursos"
+      className="relative overflow-hidden bg-white py-24 text-slate-900 sm:py-28"
     >
-      {/* Imagen de fondo ampliada para permitir desplazamiento lateral visible */}
-      <img
-        ref={imgRef}
-        src={foto}
-        alt="Entrenamiento"
-        className="absolute inset-0 h-full w-[130%] object-cover opacity-80 will-change-transform"
-      />
 
-      {/* Contenido superpuesto (se mueve en sentido contrario) */}
-      <div
-        ref={contentRef}
-        className="relative z-10 text-center px-4 will-change-transform"
-      >
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow">
-          Desafía tus límites
-        </h2>
-        <p className="text-lg md:text-xl text-gray-200 max-w-xl mx-auto">
-          Descubrí nuevas formas de mejorar tu rendimiento con cada entrenamiento.
-        </p>
+      
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-slate-950/20" />
+      <div className="absolute -right-20 top-16 h-72 w-72 rounded-full bg-sky-100 blur-3xl" />
+      <div className="absolute -left-10 bottom-0 h-72 w-72 rounded-full bg-indigo-100 blur-3xl" />
+
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="max-w-2xl space-y-4">
+          <span className="inline-flex items-center gap-2 rounded-full bg-slate-900/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
+            Cómo trabaja el staff
+          </span>
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Procesos claros para planificar, ejecutar y medir cada bloque de entrenamiento.
+          </h2>
+          <p className="text-base text-slate-600 sm:text-lg">
+            Unifica calendarios, comunicación y datos en una experiencia diseñada para entrenadores modernos y equipos exigentes.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map(({ title, description, items }) => (
+            <article
+              key={title}
+              className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-7 shadow-[0_20px_40px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_30px_60px_rgba(15,23,42,0.1)]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-50 via-transparent to-indigo-50 opacity-0 transition group-hover:opacity-100" />
+              <div className="relative space-y-4">
+                <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
+                <p className="text-sm text-slate-600">{description}</p>
+                <ul className="space-y-2 text-sm font-medium text-slate-700">
+                  {items.map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-slate-900" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

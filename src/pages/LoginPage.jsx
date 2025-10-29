@@ -1,83 +1,143 @@
 import React from "react";
 import Hero from "../components/hero";
 import ScrollSection from "../components/scrollsections";
-import img1 from "../assets/images/1.png";
-import img2 from "../assets/images/1.png";
+import TresDisciplinasZoomAnimado from "../components/TresDisciplinasZoomAnimado";
+import img1 from "../assets/images/entrenador.png";
+import img2 from "../assets/images/dashboard.png";
 import img3 from "../assets/images/1.png";
-import img4 from "../assets/images/1.png";
-import img5 from "../assets/images/1.png";
+
+
+const resources = [
+  {
+    image: img1,
+    tag: "ENTRENADORES",
+    title: "Cómo estructurar bloques híbridos de fuerza y resistencia",
+    author: "Equipo EntrenaApp",
+  },
+  {
+    image: img2,
+    tag: "DATA & BI",
+    title: "Métricas clave para anticipar fatiga y evitar lesiones",
+    author: "Dra. Valentina Pérez",
+  },
+  {
+    image: img3,
+    tag: "COACHCAST",
+    title: "Integración entre staff remoto y presencial en tiempo real",
+    author: "Host: Nicolás Duarte",
+  },
+
+];
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center">
-      {/* Hero y Scroll */}
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <Hero />
       <ScrollSection />
+      <TresDisciplinasZoomAnimado />
 
-      {/* Login */}
-      <div className="max-w-md w-full bg-white p-6 rounded-2xl shadow-md my-12">
-        <h2 className="text-2xl font-semibold mb-4 text-center">
-          Login / Registro
-        </h2>
-        <input
-          type="text"
-          placeholder="Usuario"
-          className="border p-2 w-full mb-3 rounded"
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          className="border p-2 w-full mb-3 rounded"
-        />
-        <button className="bg-blue-600 text-white px-4 py-2 rounded w-full">
-          Ingresar
-        </button>
-        <p className="text-sm text-gray-500 mt-2 text-center">
-          ¿No tienes cuenta? Regístrate aquí.
-        </p>
-      </div>
+      <section
+        id="login"
+        className="relative -mt-6 pb-24 sm:-mt-12 sm:pb-28"
+      >
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white" />
+        <div className="absolute inset-y-10 right-[10%] hidden h-64 w-64 rounded-full bg-sky-200/50 blur-3xl lg:block" />
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="space-y-6">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-slate-900/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600">
+              Portal para Alumnos
+            </span>
+            <div className="space-y-4">
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                Inicia sesión y sincroniza con tu Entrenador.
+              </h2>
+              <p className="text-base text-slate-600 sm:text-lg">
+                Accede al panel donde conviven planes, métricas y comunicación del equipo. Invita a tus amigos, comparte rutinas y sigue tu progreso sin fricción.
+              </p>
+            </div>
+            <ul className="space-y-3 text-sm text-slate-700">
+              {[
+                "Invita ilimitados entrenadores y atletas sin costos ocultos.",
+                "Integra wearables y apps de entrenamiento populares.",
+                "Automatiza recordatorios, hitos y reportes semanales.",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-slate-900" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* Artículos */}
-      <section className="w-full max-w-6xl pb-16 px-6">
-        <h2 className="text-3xl font-bold text-center mb-3 text-gray-900">
-          From Strength to Triathlons, Read Up on All Things Training
-        </h2>
-        <p className="text-center text-gray-500 mb-8">
-          Browse the latest articles and CoachCast episodes to help power your
-          performance.
-        </p>
+          <div className="relative">
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-sky-400/20 via-blue-400/10 to-indigo-500/20 blur-2xl" />
+            <form className="relative rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_25px_50px_rgba(15,23,42,0.08)]">
+              <h3 className="text-xl font-semibold text-slate-900">
+                Login / Registro
+              </h3>
+              <p className="mt-2 text-sm text-slate-500">
+                Ingresa con tu correo institucional o solicita acceso a la demo.
+              </p>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
-          <ArticleCard
-            image={img1}
-            tag="ATHLETE BLOG"
-            title="Effective 60-Minute Cycling Workouts for Busy Athletes"
-            author="Björn Geesmann"
-          />
-          <ArticleCard
-            image={img2}
-            tag="ATHLETE BLOG"
-            title="6 Bulletproof Marathon Workouts"
-            author="Andrew Simmons"
-          />
-          <ArticleCard
-            image={img3}
-            tag="COACH PODCAST"
-            title="Scott Johnston’s Winning Formula for Ruth Croft and Tom Evans at UTMB"
-            author="Host Dirk Friel"
-          />
-          <ArticleCard
-            image={img4}
-            tag="ARTICLE"
-            title="The Ultimate Strength Training Guide"
-            author="TrainingPeaks"
-          />
-          <ArticleCard
-            image={img5}
-            tag="ATHLETE BLOG"
-            title="The Importance of Lactate Threshold and How to Find Yours"
-            author="Dr. Dan Plews"
-          />
+              <label className="mt-6 block text-sm font-medium text-slate-700">
+                Correo electrónico
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="nombre@tuclub.com"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 transition focus:border-slate-900 focus:outline-none focus:ring-0"
+                />
+              </label>
+
+              <label className="mt-4 block text-sm font-medium text-slate-700">
+                Contraseña
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 transition focus:border-slate-900 focus:outline-none focus:ring-0"
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="mt-6 w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
+              >
+                Ingresar
+              </button>
+
+              <p className="mt-4 text-center text-sm text-slate-500">
+                ¿No tienes cuenta? <a href="#" className="font-semibold text-slate-900">Solicita acceso</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-900 py-24 text-white sm:py-28">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+            <div className="max-w-xl space-y-4">
+              <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white/70">
+                Comunidad EntrenaApp
+              </span>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                Historias, ideas y frameworks para equipos de alto rendimiento.
+              </h2>
+            </div>
+            <a
+              href="#"
+              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-200"
+            >
+              Explorar recursos
+            </a>
+          </div>
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {resources.map((resource) => (
+              <ArticleCard key={resource.title} {...resource} />
+            ))}
+          </div>
         </div>
       </section>
     </div>
@@ -86,17 +146,23 @@ export default function LoginPage() {
 
 function ArticleCard({ image, tag, title, author }) {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <img src={image} alt={title} className="w-full h-44 object-cover" />
-      <div className="p-4">
-        <span className="text-xs font-semibold text-blue-600 uppercase">
+    <article className="group flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm">
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        />
+        <span className="absolute left-4 top-4 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
           {tag}
         </span>
-        <h3 className="text-base font-semibold mt-2 text-gray-800 hover:text-blue-600 cursor-pointer">
+      </div>
+      <div className="flex flex-1 flex-col gap-4 p-6 text-white/80">
+        <h3 className="text-lg font-semibold text-white transition group-hover:text-sky-200">
           {title}
         </h3>
-        <p className="text-sm text-gray-500 mt-3">{author}</p>
+        <p className="text-sm">{author}</p>
       </div>
-    </div>
+    </article>
   );
 }

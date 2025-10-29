@@ -1,22 +1,15 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import AppRouter from "./router";
-import ScrollSection from "./components/scrollsections";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* ✅ Navbar aparece en todas las páginas */}
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <Navbar />
 
-      {/* ✅ Aquí renderizamos las rutas */}
-      <main className="p-6">
+      <main className="min-h-screen">
         <AppRouter />
       </main>
-
-      {/* ✅ Efecto animado al final de la página */}
-      
     </div>
   );
 }
-
