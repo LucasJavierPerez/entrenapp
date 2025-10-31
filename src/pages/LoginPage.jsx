@@ -6,6 +6,7 @@ import img2 from "../assets/images/1.png";
 import img3 from "../assets/images/1.png";
 import img4 from "../assets/images/1.png";
 import img5 from "../assets/images/1.png";
+import ig from "../assets/images/ig.png";
 
 const resources = [
   {
@@ -149,6 +150,15 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
+
+       <div className="bg-slate-900 w-40 m-auto rounded-2xl p-3 transition-all duration-300 hover:bg-slate-800 hover:border-2 hover:border-pink-500 hover:shadow-lg hover:shadow-pink-500/25">
+  <a href="https://www.instagram.com/horadeentrenapp" target="_blank" rel="noopener noreferrer">
+    <img src={ig} alt="Instagram" className="transition duration-300 hover:scale-110" />
+  </a>
+</div>
+      </section>
+      <section>
+        
       </section>
     </div>
   );
