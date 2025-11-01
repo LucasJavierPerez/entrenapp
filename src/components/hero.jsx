@@ -22,7 +22,7 @@ useEffect(() => {
   const prefersReduced =
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-  // Animación de entrada (igual que antes)
+  // Animación de entrada 
   let timeline = null;
   if (!prefersReduced) {
     timeline = gsap.timeline({ defaults: { ease: "power3.out" } });

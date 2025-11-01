@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Entrenadores", to: "/entrenadores" },
   { label: "Chat", to: "/chat" },
   { label: "Entrenamientos", to: "/entrenamientos" },
+  { label: "Perfil", to: "/perfil" },
 ];
 
 export default function Navbar() {
