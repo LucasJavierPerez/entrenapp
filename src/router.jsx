@@ -5,6 +5,7 @@ import CalculadoraPage from './pages/CalculadoraPage';
 import EntrenadoresPage from './pages/EntrenadoresPage';
 import ChatPage from './pages/ChatPage';
 import EntrenamientosPage from './pages/EntrenamientosPage';
+import UserDataForm from './pages/perfil';
 
 export default function AppRouter() {
   return (
@@ -15,6 +16,7 @@ export default function AppRouter() {
       <Route path="/entrenadores" element={<EntrenadoresPage />} />
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/entrenamientos" element={<EntrenamientosPage />} />
+      <Route path="/perfil" element={< UserDataForm/>} />
     </Routes>
   );
 }
