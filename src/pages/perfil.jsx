@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CardAnimada from "../components/CardAnime";
 import logo from "../assets/images/logo.png";
+import ig from "../assets/images/ig.png";
 
 
 const UserDataForm = () => {
@@ -59,7 +60,9 @@ const UserDataForm = () => {
         Cargar tus datos
       </button>
       {/* Botón para abrir el modal */}
-      <a href="https://www.instagram.com/horadeentrenapp" target='_blank'   ><button>instagram</button></a>
+        <a href="https://www.instagram.com/horadeentrenapp" target="_blank" rel="noopener noreferrer">
+          <img src={ig} alt="Instagram" className="transition duration-300 hover:scale-110" />
+        </a>
 
       {/* Modal */}
       {isModalOpen && (
