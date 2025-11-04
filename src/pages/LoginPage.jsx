@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Hero from "../components/hero";
 import ScrollSection from "../components/scrollsections";
 import TresDisciplinasZoomAnimado from "../components/TresDisciplinasZoomAnimado";
@@ -7,40 +7,23 @@ import img2 from "../assets/images/dashboard.png";
 import img3 from "../assets/images/1.png";
 import ig from "../assets/images/ig.png";
 
-
 const resources = [
-  {
-    image: img1,
-    tag: "ENTRENADORES",
-    title: "Cómo estructurar bloques híbridos de fuerza y resistencia",
-    author: "Equipo EntrenaApp",
-  },
-  {
-    image: img2,
-    tag: "DATA & BI",
-    title: "Métricas clave para anticipar fatiga y evitar lesiones",
-    author: "Dra. Valentina Pérez",
-  },
-  {
-    image: img3,
-    tag: "COACHCAST",
-    title: "Integración entre staff remoto y presencial en tiempo real",
-    author: "Host: Nicolás Duarte",
-  },
-
+  { image: img1, tag: "ENTRENADORES", title: "Cómo estructurar bloques híbridos de fuerza y resistencia", author: "Equipo EntrenaApp" },
+  { image: img2, tag: "DATA & BI", title: "Métricas clave para anticipar fatiga y evitar lesiones", author: "Dra. Valentina Pérez" },
+  { image: img3, tag: "COACHCAST", title: "Integración entre staff remoto y presencial en tiempo real", author: "Host: Nicolás Duarte" },
 ];
 
 export default function LoginPage() {
+  const [showRegister, setShowRegister] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Hero />
       <ScrollSection />
       <TresDisciplinasZoomAnimado />
 
-      <section
-        id="login"
-        className="relative -mt-6 pb-24 sm:-mt-12 sm:pb-28"
-      >
+      {/* ====== LOGIN / REGISTRO ====== */}
+      <section id="login" className="relative -mt-6 pb-24 sm:-mt-12 sm:pb-28">
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white" />
         <div className="absolute inset-y-10 right-[10%] hidden h-64 w-64 rounded-full bg-sky-200/50 blur-3xl lg:block" />
         <div className="relative mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
@@ -73,9 +56,7 @@ export default function LoginPage() {
           <div className="relative">
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-sky-400/20 via-blue-400/10 to-indigo-500/20 blur-2xl" />
             <form className="relative rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_25px_50px_rgba(15,23,42,0.08)]">
-              <h3 className="text-xl font-semibold text-slate-900">
-                Login / Registro
-              </h3>
+              <h3 className="text-xl font-semibold text-slate-900">Login / Registro</h3>
               <p className="mt-2 text-sm text-slate-500">
                 Ingresa con tu correo institucional o solicita acceso a la demo.
               </p>
@@ -100,21 +81,26 @@ export default function LoginPage() {
                 />
               </label>
 
-              <button
-                type="submit"
-                className="mt-6 w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
-              >
+              <button type="submit" className="mt-6 w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
                 Ingresar
               </button>
 
               <p className="mt-4 text-center text-sm text-slate-500">
-                ¿No tienes cuenta? <a href="#" className="font-semibold text-slate-900">Solicita acceso</a>
+                ¿No tienes cuenta?{" "}
+                <button
+                  type="button"
+                  onClick={() => setShowRegister(true)}
+                  className="font-semibold text-slate-900 underline underline-offset-2 hover:text-slate-700"
+                >
+                  Registrarse
+                </button>
               </p>
             </form>
           </div>
         </div>
       </section>
 
+      {/* ====== RECURSOS ====== */}
       <section className="bg-slate-900 py-24 text-white sm:py-28">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
@@ -140,12 +126,16 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
-         <div className="bg-slate-900 w-40 m-auto rounded-2xl p-3 transition-all duration-300 hover:bg-slate-800 hover:border-2 hover:border-pink-500 hover:shadow-lg hover:shadow-pink-500/25">
-  <a href="https://www.instagram.com/horadeentrenapp" target="_blank" rel="noopener noreferrer">
-    <img src={ig} alt="Instagram" className="transition duration-300 hover:scale-110" />
-  </a>
-</div>
+
+        <div className="bg-slate-900 w-40 m-auto rounded-2xl p-3 transition-all duration-300 hover:bg-slate-800 hover:border-2 hover:border-pink-500 hover:shadow-lg hover:shadow-pink-500/25">
+          <a href="https://www.instagram.com/horadeentrenapp" target="_blank" rel="noopener noreferrer">
+            <img src={ig} alt="Instagram" className="transition duration-300 hover:scale-110" />
+          </a>
+        </div>
       </section>
+
+      {/* ====== MODAL DE REGISTRO ====== */}
+      {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
     </div>
   );
 }
@@ -154,21 +144,98 @@ function ArticleCard({ image, tag, title, author }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm">
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img
-          src={image}
-          alt={title}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-        />
+        <img src={image} alt={title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
         <span className="absolute left-4 top-4 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
           {tag}
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-4 p-6 text-white/80">
-        <h3 className="text-lg font-semibold text-white transition group-hover:text-sky-200">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold text-white transition group-hover:text-sky-200">{title}</h3>
         <p className="text-sm">{author}</p>
       </div>
     </article>
+  );
+}
+
+/* ====== Modal de Registro ====== */
+function RegisterModal({ onClose }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: enviar al backend (fetch/axios)
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center p-4">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      {/* Panel */}
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white shadow-xl">
+        <div className="flex items-center justify-between border-b border-slate-200 p-5">
+          <h3 className="text-lg font-semibold text-slate-900">Crear cuenta</h3>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 text-2xl leading-none" aria-label="Cerrar">×</button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-5 space-y-4">
+          <label className="block text-sm font-medium text-slate-700">
+            Nombre y apellido
+            <input
+              type="text"
+              name="name"
+              required
+              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+              placeholder="Tu nombre"
+            />
+          </label>
+
+          <label className="block text-sm font-medium text-slate-700">
+            Email
+            <input
+              type="email"
+              name="email"
+              required
+              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+              placeholder="nombre@correo.com"
+            />
+          </label>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm font-medium text-slate-700">
+              Contraseña
+              <input
+                type="password"
+                name="password"
+                required
+                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                placeholder="••••••••"
+              />
+            </label>
+            <label className="block text-sm font-medium text-slate-700">
+              Repetir contraseña
+              <input
+                type="password"
+                name="password2"
+                required
+                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                placeholder="••••••••"
+              />
+            </label>
+          </div>
+
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <input type="checkbox" required className="rounded border-slate-300 text-slate-900 focus:ring-slate-900" />
+            Acepto términos y condiciones
+          </label>
+
+          <button type="submit" className="w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+            Crear cuenta
+          </button>
+
+          <p className="text-center text-xs text-slate-500 mt-2">
+            ¿Ya tienes cuenta? <button type="button" onClick={onClose} className="font-semibold text-slate-700 underline underline-offset-2">Inicia sesión</button>
+          </p>
+        </form>
+      </div>
+    </div>
   );
 }
