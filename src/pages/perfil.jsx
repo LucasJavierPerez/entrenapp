@@ -26,7 +26,12 @@ export default function UserDataForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((p) => ({ ...p, [name]: value }));
+    // normalizo altura/peso a números positivos (texto igual se muestra)
+    const cleaned =
+      name === "peso" || name === "altura"
+        ? value.replace(/[^\d.,]/g, "").replace(",", ".")
+        : value;
+    setFormData((p) => ({ ...p, [name]: cleaned }));
   };
 
   const handleFileChange = (e) => {
@@ -56,44 +61,50 @@ export default function UserDataForm() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f2e] via-[#11173f] to-[#0c1030]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_10%_20%,rgba(0,0,0,0.95)_0%,transparent_65%),radial-gradient(circle_600px_at_90%_80%,rgba(0,0,0,0.98)_0%,transparent_70%),radial-gradient(circle_400px_at_30%_70%,rgba(0,0,0,0.9)_0%,transparent_60%),radial-gradient(circle_450px_at_70%_30%,rgba(0,0,0,0.92)_0%,transparent_62%)] opacity-30" />
 
-      <div className="relative w-full max-w-4xl space-y-6">
+      <div className="relative w-full max-w-5xl space-y-6">
         <h1 className="text-center text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Perfil del Atleta
         </h1>
 
-        {/* Card animada (glass) */}
-        <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-[0_25px_60px_rgba(2,6,23,0.35)] p-6">
-          <div className="max-w-md mx-auto">
-            <CardAnimada enable3D intensity={8} className="max-w-md mx-auto">
-              <div className="p-4 flex items-center justify-center">
-                <img src={logo} alt="EntrenaApp" className="h-24 w-auto drop-shadow" />
-              </div>
-            </CardAnimada>
-          </div>
+        {/* Grid: Preview a la izquierda / Acciones a la derecha (stack en mobile) */}
+        <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          {/* PREVIEW DEL PERFIL */}
+          <ProfilePreview formData={formData} previewURL={previewURL} />
 
-          {/* Acciones */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3 text-sm font-semibold text-slate-900 hover:from-cyan-300 hover:to-blue-400 transition"
-            >
-              Cargar tus datos
-            </button>
+          {/* Acciones / Card con logo + botones */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-[0_25px_60px_rgba(2,6,23,0.35)] p-6">
+            <div className="max-w-md mx-auto">
+              <CardAnimada enable3D intensity={8} className="max-w-md mx-auto">
+                <div className="p-4 flex items-center justify-center">
+                  <img src={logo} alt="EntrenaApp" className="h-24 w-auto drop-shadow" />
+                </div>
+              </CardAnimada>
+            </div>
 
-            <a
-              href="https://www.instagram.com/horadeentrenapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 transition"
-            >
-              <img src={ig} alt="Instagram" className="h-5 w-5" />
-              Instagram
-            </a>
+            {/* Acciones */}
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3 text-sm font-semibold text-slate-900 hover:from-cyan-300 hover:to-blue-400 transition"
+              >
+                Cargar tus datos
+              </button>
+
+              <a
+                href="https://www.instagram.com/horadeentrenapp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 transition"
+              >
+                <img src={ig} alt="Instagram" className="h-5 w-5" />
+                Instagram
+              </a>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
 
-      {/* Modal */}
+      {/* Modal de carga de datos */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 grid place-items-center p-4">
           {/* Backdrop */}
@@ -192,7 +203,7 @@ export default function UserDataForm() {
                   type="submit"
                   className="w-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-3 text-sm font-semibold text-slate-900 hover:from-cyan-300 hover:to-blue-400 transition"
                 >
-                  Enviar datos
+                  Guardar cambios
                 </button>
               </div>
             </form>
@@ -200,6 +211,89 @@ export default function UserDataForm() {
         </div>
       )}
     </main>
+  );
+}
+
+/* =============== Preview del Perfil =============== */
+function ProfilePreview({ formData, previewURL }) {
+  // Cálculo de IMC (peso kg / (altura m)^2)
+  const bmi = useMemo(() => {
+    const peso = parseFloat(formData.peso);
+    const alturaM = parseFloat(formData.altura) / 100;
+    if (!peso || !alturaM) return null;
+    const v = peso / (alturaM * alturaM);
+    // redondeo a 1 decimal
+    return Math.round(v * 10) / 10;
+  }, [formData.peso, formData.altura]);
+
+
+
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm shadow-[0_25px_60px_rgba(2,6,23,0.35)] p-6">
+      <div className="flex items-center gap-4">
+        {/* Avatar */}
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-white/10 bg-white/10">
+          {previewURL ? (
+            <img src={previewURL} alt="Avatar" className="h-full w-full object-cover" />
+          ) : (
+            <div className="grid h-full w-full place-content-center text-white/70">👤</div>
+          )}
+        </div>
+
+        {/* Datos principales */}
+        <div className="min-w-0">
+          <h3 className="text-xl font-semibold">Tu perfil</h3>
+          <p className="text-sm text-white/70 truncate">
+            {formData.direccion || "Dirección no especificada"}
+          </p>
+        </div>
+      </div>
+
+      {/* Métricas */}
+      <dl className="mt-6 grid grid-cols-3 gap-3">
+        <Metric label="Peso" value={formData.peso ? `${formData.peso} kg` : "—"} />
+        <Metric label="Altura" value={formData.altura ? `${formData.altura} cm` : "—"} />
+        <Metric
+          label="IMC"
+          value={bmi ? `${bmi}` : "—"}
+        />
+      </dl>
+
+      {/* Chips de estado */}
+      <div className="mt-5 flex flex-wrap gap-2">
+        <Chip active={!!formData.direccion} label="Dirección" />
+        <Chip active={!!formData.peso} label="Peso" />
+        <Chip active={!!formData.altura} label="Altura" />
+        <Chip active={!!previewURL} label="Foto cargada" />
+      </div>
+
+      {/* Ayuda */}
+      <p className="mt-4 text-sm text-white/60">
+        Este es un <strong>modelo de tu perfil</strong>. Se actualiza en vivo con los datos que completes.
+      </p>
+    </div>
+  );
+}
+
+function Metric({ label, value, extra }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <dt className="text-xs uppercase tracking-wide text-white/60">{label}</dt>
+      <dd className="mt-1 text-lg font-semibold">{value}</dd>
+      {extra && <div className="mt-1">{extra}</div>}
+    </div>
+  );
+}
+
+function Chip({ label, active }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs
+        ${active ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-200" : "border-white/10 bg-white/5 text-white/70"}`}
+    >
+      <span className={`h-1.5 w-1.5 rounded-full ${active ? "bg-emerald-300" : "bg-white/40"}`} />
+      {label}
+    </span>
   );
 }
 

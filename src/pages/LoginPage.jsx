@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Hero from "../components/hero";
 import ScrollSection from "../components/scrollsections";
 import TresDisciplinasZoomAnimado from "../components/TresDisciplinasZoomAnimado";
+
 import img1 from "../assets/images/entrenador.png";
 import img2 from "../assets/images/dashboard.png";
 import img3 from "../assets/images/1.png";
@@ -134,7 +135,7 @@ export default function LoginPage() {
         </div>
       </section>
 
-      {/* ====== MODAL DE REGISTRO ====== */}
+      {/* ====== MODAL DE REGISTRO (con Plan y Pago) ====== */}
       {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
     </div>
   );
@@ -157,11 +158,56 @@ function ArticleCard({ image, tag, title, author }) {
   );
 }
 
-/* ====== Modal de Registro ====== */
+/* ====== Modal de Registro con Plan y Pago  ====== */
 function RegisterModal({ onClose }) {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+    terms: false,
+    plan: "single", // "single" | "multi"
+    cardNumber: "",
+    cardName: "",
+    cardExpiry: "",
+    cardCvv: "",
+  });
+
+  const PRICES = { single: 1000, multi: 2000 };
+  const currency = (v) =>
+    new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(v);
+  const price = PRICES[form.plan];
+
+  const onInput = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((s) => ({ ...s, [name]: type === "checkbox" ? checked : value }));
+  };
+
+  const formatCard = (v) =>
+    v.replace(/\D/g, "").slice(0, 16).replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+
+  const validate = () => {
+    if (!form.name.trim()) return "Ingresá tu nombre";
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) return "Email inválido";
+    if (!form.password || form.password.length < 6) return "La contraseña debe tener al menos 6 caracteres";
+    if (form.password !== form.password2) return "Las contraseñas no coinciden";
+    if (!form.terms) return "Debes aceptar los términos";
+    if (!form.cardNumber || form.cardNumber.replace(/\s+/g, "").length < 13) return "Número de tarjeta inválido";
+    if (!/^\d{2}\/\d{2}$/.test(form.cardExpiry)) return "Vencimiento inválido (MM/AA)";
+    if (!/^\d{3,4}$/.test(form.cardCvv)) return "CVV inválido";
+    return null;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: enviar al backend (fetch/axios)
+    const err = validate();
+    if (err) {
+      alert(err);
+      return;
+    }
+    // TODO: enviar al backend (plan & pago) y crear usuario
+    console.log("Registro:", { ...form, price });
+    alert(`¡Cuenta creada! Plan: ${form.plan === "single" ? "Un deporte" : "Multideporte"} - Total: ${currency(price)}`);
     onClose();
   };
 
@@ -170,70 +216,153 @@ function RegisterModal({ onClose }) {
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       {/* Panel */}
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white shadow-xl">
+      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
         <div className="flex items-center justify-between border-b border-slate-200 p-5">
           <h3 className="text-lg font-semibold text-slate-900">Crear cuenta</h3>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-700 text-2xl leading-none" aria-label="Cerrar">×</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-5 space-y-4">
-          <label className="block text-sm font-medium text-slate-700">
-            Nombre y apellido
-            <input
-              type="text"
-              name="name"
-              required
-              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
-              placeholder="Tu nombre"
-            />
-          </label>
-
-          <label className="block text-sm font-medium text-slate-700">
-            Email
-            <input
-              type="email"
-              name="email"
-              required
-              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
-              placeholder="nombre@correo.com"
-            />
-          </label>
-
-          <div className="grid gap-4 sm:grid-cols-2">
+        <form onSubmit={handleSubmit} className="grid gap-6 p-5 lg:grid-cols-2">
+          {/* Columna izquierda: datos */}
+          <div className="space-y-4">
             <label className="block text-sm font-medium text-slate-700">
-              Contraseña
+              Nombre y apellido
               <input
-                type="password"
-                name="password"
-                required
+                type="text" name="name" value={form.name} onChange={onInput}
                 className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
-                placeholder="••••••••"
+                placeholder="Tu nombre" required
               />
             </label>
+
             <label className="block text-sm font-medium text-slate-700">
-              Repetir contraseña
+              Email
               <input
-                type="password"
-                name="password2"
-                required
+                type="email" name="email" value={form.email} onChange={onInput}
                 className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
-                placeholder="••••••••"
+                placeholder="nombre@correo.com" required
               />
+            </label>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block text-sm font-medium text-slate-700">
+                Contraseña
+                <input
+                  type="password" name="password" value={form.password} onChange={onInput}
+                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                  placeholder="••••••••" required
+                />
+              </label>
+              <label className="block text-sm font-medium text-slate-700">
+                Repetir contraseña
+                <input
+                  type="password" name="password2" value={form.password2} onChange={onInput}
+                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                  placeholder="••••••••" required
+                />
+              </label>
+            </div>
+
+            <label className="flex items-center gap-2 text-sm text-slate-600">
+              <input
+                type="checkbox" name="terms" checked={form.terms} onChange={onInput}
+                className="rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+              />
+              Acepto términos y condiciones
             </label>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-slate-600">
-            <input type="checkbox" required className="rounded border-slate-300 text-slate-900 focus:ring-slate-900" />
-            Acepto términos y condiciones
-          </label>
+          {/* Columna derecha: plan + pago */}
+          <div className="space-y-4">
+            {/* PLAN */}
+            <fieldset className="rounded-xl border border-slate-200 p-4">
+              <legend className="px-1 text-sm font-semibold text-slate-700">Plan</legend>
 
-          <button type="submit" className="w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
-            Crear cuenta
-          </button>
+              <label className={`mt-2 flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition
+                                 ${form.plan === "single" ? "border-slate-900 bg-slate-900/5" : "border-slate-200 hover:border-slate-300"}`}>
+                <input type="radio" name="plan" value="single" checked={form.plan === "single"} onChange={onInput} className="mt-1" />
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Plan un deporte</p>
+                  <p className="text-xs text-slate-600">Ideal si entrenás una sola disciplina</p>
+                </div>
+                <span className="ml-auto text-sm font-semibold text-slate-900">{currency(1000)}</span>
+              </label>
 
-          <p className="text-center text-xs text-slate-500 mt-2">
-            ¿Ya tienes cuenta? <button type="button" onClick={onClose} className="font-semibold text-slate-700 underline underline-offset-2">Inicia sesión</button>
-          </p>
+              <label className={`mt-2 flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition
+                                 ${form.plan === "multi" ? "border-slate-900 bg-slate-900/5" : "border-slate-200 hover:border-slate-300"}`}>
+                <input type="radio" name="plan" value="multi" checked={form.plan === "multi"} onChange={onInput} className="mt-1" />
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Plan multideporte</p>
+                  <p className="text-xs text-slate-600">Combina ciclismo, running, natación, etc.</p>
+                </div>
+                <span className="ml-auto text-sm font-semibold text-slate-900">{currency(2000)}</span>
+              </label>
+
+              <div className="mt-3 flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
+                <p className="text-sm text-slate-700">Total</p>
+                <p className="text-base font-semibold text-slate-900">{currency(price)}</p>
+              </div>
+            </fieldset>
+
+            {/* PAGO (mock) */}
+            <fieldset className="rounded-xl border border-slate-200 p-4">
+              <legend className="px-1 text-sm font-semibold text-slate-700">Pago con tarjeta</legend>
+
+              <label className="block text-sm font-medium text-slate-700">
+                Número de tarjeta
+                <input
+                  name="cardNumber"
+                  value={form.cardNumber}
+                  onChange={(e) => onInput({ target: { name: "cardNumber", value: formatCard(e.target.value) } })}
+                  inputMode="numeric"
+                  placeholder="1234 5678 9012 3456"
+                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                />
+              </label>
+
+              <div className="mt-3 grid gap-3 grid-cols-[1fr_1fr]">
+                <label className="block text-sm font-medium text-slate-700">
+                  Vencimiento (MM/AA)
+                  <input
+                    name="cardExpiry"
+                    value={form.cardExpiry}
+                    onChange={onInput}
+                    placeholder="08/27"
+                    className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                  />
+                </label>
+                <label className="block text-sm font-medium text-slate-700">
+                  CVV
+                  <input
+                    name="cardCvv"
+                    value={form.cardCvv}
+                    onChange={onInput}
+                    inputMode="numeric"
+                    placeholder="123"
+                    className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                  />
+                </label>
+              </div>
+
+              <label className="mt-3 block text-sm font-medium text-slate-700">
+                Titular (como figura en la tarjeta)
+                <input
+                  name="cardName"
+                  value={form.cardName}
+                  onChange={onInput}
+                  placeholder="Nombre Apellido"
+                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-slate-900 focus:outline-none"
+                />
+              </label>
+            </fieldset>
+
+            <button type="submit" className="w-full rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+              Pagar {currency(price)} y crear cuenta
+            </button>
+
+            <p className="text-center text-xs text-slate-500 -mt-1">
+              Cobro simulado para demo. Integraremos pasarela real (Mercado Pago) luego.
+            </p>
+          </div>
         </form>
       </div>
     </div>
