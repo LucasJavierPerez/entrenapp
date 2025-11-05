@@ -130,7 +130,7 @@ useEffect(() => {
               href="#login"
               className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-200"
             >
-              Comenzar gratis
+              Comenzar ahora
             </a>
             <a
               href="#recursos"
